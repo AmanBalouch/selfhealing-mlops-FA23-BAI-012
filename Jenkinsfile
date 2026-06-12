@@ -20,7 +20,7 @@ pipeline {
         stage('Build and Run') {
             steps {
                 sh '''
-                    docker build -t sentiment-api:local .
+                    docker build --no-cache -t sentiment-api:local .
                     docker stop sentiment-test || true
                     docker rm   sentiment-test || true
                     docker run -d --name sentiment-test -p 5000:5000 sentiment-api:local
