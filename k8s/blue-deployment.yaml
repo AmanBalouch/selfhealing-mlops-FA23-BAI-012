@@ -17,6 +17,7 @@ spec:
       containers:
         - name: sentiment-api
           image: durmuhammad/sentiment-api:unstable
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           volumeMounts:
