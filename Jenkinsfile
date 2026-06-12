@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKERHUB_USER        = 'durmuhammad'
@@ -8,15 +7,12 @@ pipeline {
         IMAGE_STABLE          = "${DOCKERHUB_USER}/sentiment-api:stable"
         KUBECONFIG            = "/var/lib/jenkins/.kube/config"
     }
-
     stages {
-
         stage('Fetch') {
             steps {
                 checkout scm
             }
         }
-
         stage('Build and Run') {
             steps {
                 sh '''
@@ -28,7 +24,6 @@ pipeline {
                 '''
             }
         }
-
         stage('Unit Test') {
             steps {
                 sh '''
@@ -40,7 +35,6 @@ pipeline {
                 '''
             }
         }
-
         stage('UI Test') {
             steps {
                 sh '''
@@ -50,29 +44,25 @@ pipeline {
                         --shm-size=2g \
                         -v $(pwd)/tests:/tests \
                         selenium/standalone-chrome:4.21.0-20240517 \
-                        bash -c "pip install pytest selenium requests --quiet && python -m pytest /tests/test_ui.py -v" || true
+                        bash -c "python3 -m pip install pytest selenium requests --quiet && python3 -m pytest /tests/test_ui.py -v" || true
                 '''
             }
         }
-
         stage('Build and Push') {
             steps {
                 sh '''
                     echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-
                     docker build -t ${IMAGE_UNSTABLE} .
                     docker push ${IMAGE_UNSTABLE}
-
                     git fetch origin stable-fallback
                     git checkout origin/stable-fallback -- app.py
                     docker build -t ${IMAGE_STABLE} .
                     docker push ${IMAGE_STABLE}
-
                     git checkout HEAD -- app.py
+                    git checkout HEAD -- k8s/
                 '''
             }
         }
-
         stage('Deploy to Minikube') {
             steps {
                 sh '''
@@ -85,9 +75,7 @@ pipeline {
                 '''
             }
         }
-
     }
-
     post {
         always {
             sh 'docker stop sentiment-test || true'
