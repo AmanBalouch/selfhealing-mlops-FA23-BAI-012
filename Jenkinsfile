@@ -24,7 +24,7 @@ pipeline {
                     docker stop sentiment-test || true
                     docker rm   sentiment-test || true
                     docker run -d --name sentiment-test -p 5000:5000 sentiment-api:local
-                    sleep 20
+                    sleep 40
                 '''
             }
         }
