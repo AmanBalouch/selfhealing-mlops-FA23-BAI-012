@@ -47,9 +47,10 @@ pipeline {
                     docker run --rm \
                         --network host \
                         -e APP_URL=http://localhost:5000 \
-                        -e DISPLAY=:99 \
-                        selenium/standalone-chrome:latest \
-                        bash -c "pip install pytest selenium requests && python -m pytest tests/test_ui.py -v" || true
+                        --shm-size=2g \
+                        -v $(pwd)/tests:/tests \
+                        selenium/standalone-chrome:4.21.0-20240517 \
+                        bash -c "pip install pytest selenium requests --quiet && python -m pytest /tests/test_ui.py -v" || true
                 '''
             }
         }
