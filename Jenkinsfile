@@ -43,8 +43,11 @@ pipeline {
                         -e APP_URL=http://localhost:5000 \
                         --shm-size=2g \
                         -v $(pwd)/tests:/tests \
-                        selenium/standalone-chrome:4.21.0-20240517 \
-                        bash -c "pip3 install pytest selenium requests --quiet 2>/dev/null || pip install pytest selenium requests --quiet 2>/dev/null || python3 -m pip install pytest selenium requests --quiet 2>/dev/null; python3 -m pytest /tests/test_ui.py -v" || true
+                        -v /usr/bin/google-chrome:/usr/bin/google-chrome \
+                        -v /usr/bin/chromedriver:/usr/bin/chromedriver \
+                        -v /usr/lib/chromium-browser:/usr/lib/chromium-browser \
+                        sentiment-api:local \
+                        python -m pytest /tests/test_ui.py -v || true
                 '''
             }
         }
