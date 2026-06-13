@@ -44,7 +44,7 @@ pipeline {
                         --shm-size=2g \
                         -v $(pwd)/tests:/tests \
                         selenium/standalone-chrome:4.21.0-20240517 \
-                        bash -c "python3 -m pip install pytest selenium requests --quiet && python3 -m pytest /tests/test_ui.py -v" || true
+                        bash -c "pip3 install pytest selenium requests --quiet 2>/dev/null || pip install pytest selenium requests --quiet 2>/dev/null || python3 -m pip install pytest selenium requests --quiet 2>/dev/null; python3 -m pytest /tests/test_ui.py -v" || true
                 '''
             }
         }
