@@ -38,16 +38,22 @@ pipeline {
         stage('UI Test') {
             steps {
                 sh '''
+                    docker stop selenium-hub || true
+                    docker rm selenium-hub || true
+                    docker run -d --name selenium-hub \
+                        --network host \
+                        --shm-size=2g \
+                        selenium/standalone-chrome:4.21.0-20240517
+                    sleep 5
                     docker run --rm \
                         --network host \
                         -e APP_URL=http://localhost:5000 \
-                        --shm-size=2g \
+                        -e SELENIUM_URL=http://localhost:4444 \
                         -v $(pwd)/tests:/tests \
-                        -v /usr/bin/google-chrome:/usr/bin/google-chrome \
-                        -v /usr/bin/chromedriver:/usr/bin/chromedriver \
-                        -v /usr/lib/chromium-browser:/usr/lib/chromium-browser \
                         sentiment-api:local \
                         python -m pytest /tests/test_ui.py -v || true
+                    docker stop selenium-hub || true
+                    docker rm selenium-hub || true
                 '''
             }
         }
