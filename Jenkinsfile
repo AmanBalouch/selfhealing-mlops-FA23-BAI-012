@@ -44,7 +44,7 @@ pipeline {
                         --network host \
                         --shm-size=2g \
                         selenium/standalone-chrome:4.21.0-20240517
-                    sleep 5
+                    sleep 10
                     docker run --rm \
                         --network host \
                         -e APP_URL=http://localhost:5000 \
