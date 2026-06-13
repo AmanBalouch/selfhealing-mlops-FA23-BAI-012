@@ -2,11 +2,11 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 APP_URL = os.environ.get("APP_URL", "http://localhost:5000")
+SELENIUM_URL = os.environ.get("SELENIUM_URL", "http://localhost:4444")
 
 def test_frontend_sentiment():
     options = Options()
@@ -14,11 +14,11 @@ def test_frontend_sentiment():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
-    options.add_argument("--remote-debugging-port=9222")
-    options.binary_location = "/usr/bin/google-chrome"
 
-    service = Service(executable_path="/usr/bin/chromedriver")
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Remote(
+        command_executor=SELENIUM_URL,
+        options=options
+    )
 
     try:
         driver.get(APP_URL)
