@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKERHUB_USER        = 'durmuhammad'
         IMAGE_UNSTABLE        = "${DOCKERHUB_USER}/sentiment-api:unstable"
-        IMAGE_STABLE          = "${DOCKERHUB_USER}/sentiment-api:stable"
+        IMAGE_STABLE          = "${DOCKERHUB_USER}/sentiment-api:stable" 
         KUBECONFIG            = "/var/lib/jenkins/.kube/config"
     }
     stages {
