@@ -16,11 +16,11 @@ pipeline {
         stage('Build and Run') {
             steps {
                 sh '''
-                    docker build --no-cache -t sentiment-api:local .
+                    docker build  -t sentiment-api:local .
                     docker stop sentiment-test || true
                     docker rm   sentiment-test || true
                     docker run -d --name sentiment-test -p 5000:5000 sentiment-api:local
-                    sleep 40
+                    sleep 30
                 '''
             }
         }
@@ -44,7 +44,7 @@ pipeline {
                         --network host \
                         --shm-size=2g \
                         selenium/standalone-chrome:4.21.0-20240517
-                    sleep 10
+                    sleep 5
                     docker run --rm \
                         --network host \
                         -e APP_URL=http://localhost:5000 \
