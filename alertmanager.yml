@@ -7,7 +7,7 @@ route:
   group_interval: 10s 
   repeat_interval: 1h
   receiver: jenkins-rollback-webhook
-
+ 
 receivers:
   - name: jenkins-rollback-webhook
     webhook_configs:
