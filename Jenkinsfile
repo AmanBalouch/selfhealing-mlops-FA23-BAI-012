@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_USER        = 'durmuhammad'
         IMAGE_UNSTABLE        = "${DOCKERHUB_USER}/sentiment-api:unstable"
         IMAGE_STABLE          = "${DOCKERHUB_USER}/sentiment-api:stable" 
-        KUBECONFIG            = "/var/lib/jenkins/.kube/config"
+        KUBECONFIG            = "/var/lib/jenkins/.kube/config" 
     }
     stages {
         stage('Fetch') {
